@@ -6,4 +6,4 @@ export {
   formatDayAndTime,
 } from "./utils/utils";
 
-export { useWeatherHighlights } from "./utils/useWeatherHighlights.ts/genericHooks";
+export { useWeatherHighlights } from "./utils/useWeatherHighlights.ts/useWeatherHighlights";
