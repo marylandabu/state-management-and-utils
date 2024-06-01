@@ -5,3 +5,5 @@ export {
   formatTime,
   formatDayAndTime,
 } from "./utils/utils";
+
+export { useWeatherHighlights } from "./utils/useWeatherHighlights.ts/genericHooks";

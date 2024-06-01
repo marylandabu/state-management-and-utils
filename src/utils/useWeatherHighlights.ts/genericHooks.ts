@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { ListItem, WeatherResponse } from "../types/weatherTypes";
 
-const useWeatherHighlights = (weather: WeatherResponse) => {
+export const useWeatherHighlights = (weather: WeatherResponse) => {
   const [snowDays, setSnowDays] = useState<ListItem[]>([]);
   const [windyDays, setWindyDays] = useState<ListItem[]>([]);
   const [coldestDay, setColdestDay] = useState<ListItem | undefined>();
@@ -60,5 +60,3 @@ const useWeatherHighlights = (weather: WeatherResponse) => {
 
   return { snowDays, windyDays, coldestDay, windiestDay, highestOddsDay };
 };
-
-export default useWeatherHighlights;
