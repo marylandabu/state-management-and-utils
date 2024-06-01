@@ -1,13 +1,13 @@
 {
   "name": "state-management-and-utils",
   "private": false,
-  "version": "0.0.9",
+  "version": "0.0.10",
   "main": "dist/cjs/index",
   "module": "dist/esm/index",
   "types": "dist/index.d.ts",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && rollup",
+    "build": "tsc && vite build && rollup -c",
     "rollup": "rollup -c --bundleConfigAsCjs",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
