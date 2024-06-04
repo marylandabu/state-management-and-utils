@@ -15,7 +15,7 @@
     "isolatedModules": true,
     "declaration": true,
     "declarationDir": "./dist/types",
-    "emitDeclarationOnly": false, // Set to false to emit both code and declaration files
+    "emitDeclarationOnly": false,
     "outDir": "./dist",
     "noEmit": false,
     "jsx": "react-jsx",

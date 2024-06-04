@@ -6,6 +6,7 @@ import terser from "@rollup/plugin-terser";
 import peerDepsExternal from "rollup-plugin-peer-deps-external";
 import postcss from "rollup-plugin-postcss";
 import json from "@rollup/plugin-json";
+import nodePolyfills from "rollup-plugin-node-polyfills";
 
 const packageJson = require("./package.json");
 
@@ -26,15 +27,18 @@ export default [
     ],
     plugins: [
       peerDepsExternal(),
-      resolve(),
+      resolve({
+        browser: true, // Ensure to prefer browser-compatible builds
+      }),
       commonjs(),
-      json(), // Add JSON plugin
+      json(),
       typescript({
         tsconfig: "./tsconfig.json",
-        outputToFilesystem: true, // Ensure this option to enable file system output
+        outputToFilesystem: true,
       }),
       terser(),
       postcss(),
+      nodePolyfills(), // Add node polyfills to handle any Node.js built-ins
     ],
     external: ["react", "react-dom"],
   },

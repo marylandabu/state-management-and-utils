@@ -5,6 +5,7 @@ import { getConfig } from "./config";
 
 export const authAxios: AxiosInstance = axios.create();
 
+export const getToken = () => localStorage.getItem("token");
 authAxios.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
