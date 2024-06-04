@@ -18,7 +18,7 @@ authAxios.interceptors.request.use(
 );
 
 export const signIn = async (reqBody: { email: string; password: string }) => {
-  const { baseURL, endpoints } = getConfig();
+  const { baseURL, endpoints, authorization } = getConfig();
   const body = { user: reqBody };
 
   try {
@@ -27,8 +27,8 @@ export const signIn = async (reqBody: { email: string; password: string }) => {
       body
     );
 
-    const accessToken = response.headers["Authorization"];
-    if (accessToken) localStorage.setItem("token", accessToken);
+    const accessToken = response.headers[authorization];
+    if (accessToken) localStorage.setItem("token", accessToken.split(" ")[1]);
 
     return accessToken;
   } catch (err) {

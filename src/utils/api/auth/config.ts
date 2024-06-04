@@ -1,4 +1,5 @@
 export interface Config {
+  authorization: string;
   baseURL: string;
   endpoints: {
     login: string;
@@ -14,6 +15,7 @@ const defaultConfig: Config = {
     currentUser: "/auth/current_user",
     logout: "/auth/logout",
   },
+  authorization: "authorization",
 };
 
 let config: Config = { ...defaultConfig };
