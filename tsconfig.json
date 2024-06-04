@@ -9,19 +9,16 @@
     ],
     "module": "ESNext",
     "skipLibCheck": true,
-    /* Bundler mode */
-    "moduleResolution": "node", // Use node resolution strategy
-    "allowImportingTsExtensions": true,
+    "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "declaration": true, // Ensure declarations are generated
-    "declarationDir": "./dist/types", // Output directory for declarations
-    "emitDeclarationOnly": true, // Only emit declaration files
-    "outDir": "./dist", // Output directory for compiled files
-    "noEmit": false, // Ensure files are emitted
+    "declaration": true,
+    "declarationDir": "./dist/types",
+    "emitDeclarationOnly": false, // Set to false to emit both code and declaration files
+    "outDir": "./dist",
+    "noEmit": false,
     "jsx": "react-jsx",
-    /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
