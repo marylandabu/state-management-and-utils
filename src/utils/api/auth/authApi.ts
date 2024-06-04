@@ -10,7 +10,7 @@ authAxios.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers.Authorization = token;
     }
     return config;
   },
@@ -28,7 +28,7 @@ export const signIn = async (reqBody: { email: string; password: string }) => {
     );
 
     const accessToken = response.headers[authorization];
-    if (accessToken) localStorage.setItem("token", accessToken.split(" ")[1]);
+    if (accessToken) localStorage.setItem("token", accessToken);
 
     return accessToken;
   } catch (err) {
