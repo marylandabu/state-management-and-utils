@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ListItem, WeatherResponse } from "../types/weatherTypes";
+import { ListItem, WeatherResponse } from "../../types/weatherTypes";
 
 export const useWeatherHighlights = (weather: WeatherResponse) => {
   const [snowDays, setSnowDays] = useState<ListItem[]>([]);

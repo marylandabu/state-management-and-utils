@@ -1,6 +1,6 @@
 export * from "./utils/utils";
 
-export * from "./utils/useWeatherHighlights.ts/useWeatherHighlights";
+export * from "./utils/hooks/useWeatherHighlights.ts/useWeatherHighlights";
 
 export * from "./store/authStore";
 
