@@ -1,9 +1,11 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 import { getConfig } from "./config";
+import { getActions } from "../../../store/authStore";
 
 // src/api.ts
 
 export const authAxios: AxiosInstance = axios.create();
+const { clearUser, setAccessToken, setUserData } = getActions();
 
 export const getToken = () => localStorage.getItem("token");
 authAxios.interceptors.request.use(
@@ -29,6 +31,8 @@ export const signIn = async (reqBody: { email: string; password: string }) => {
 
     const accessToken = response.headers[authorization];
     if (accessToken) localStorage.setItem("token", accessToken);
+    setAccessToken(accessToken);
+    setUserData(response?.data?.data);
 
     return accessToken;
   } catch (err) {
@@ -57,6 +61,7 @@ export const logOut = async () => {
     const response = await authAxios.delete(`${baseURL}${endpoints.logout}`);
     if (response.status === 200) {
       localStorage.removeItem("token");
+      clearUser();
     }
     return response.data;
   } catch (error) {
