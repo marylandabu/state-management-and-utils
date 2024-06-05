@@ -20,6 +20,7 @@ export const signIn = async (reqBody: { email: string; password: string }) => {
     baseURL,
     endpoints,
     authorization,
+    debug,
     actions: { setAccessToken, setUserData },
   } = getConfig();
   const body = { user: reqBody };
@@ -31,6 +32,13 @@ export const signIn = async (reqBody: { email: string; password: string }) => {
     );
 
     const accessToken = response.headers[authorization];
+    if (debug) {
+      console.log("debugging sign in", {
+        response,
+        accessToken,
+        headers: response.headers,
+      });
+    }
     if (accessToken) localStorage.setItem("token", accessToken);
     setAccessToken(accessToken);
     setUserData(response?.data?.data);
@@ -42,13 +50,20 @@ export const signIn = async (reqBody: { email: string; password: string }) => {
 };
 
 export const fetchUser = async () => {
-  const { baseURL, endpoints } = getConfig();
+  const { baseURL, endpoints, debug } = getConfig();
   const token = localStorage.getItem("token");
 
   if (!token) return null;
 
   try {
     const response = await authAxios.get(`${baseURL}${endpoints.currentUser}`);
+    if (debug) {
+      console.log("debugging sign in", {
+        response,
+        token,
+        headers: response.headers,
+      });
+    }
     return response.data;
   } catch (error) {
     console.error(error);

@@ -3,6 +3,7 @@ import { getActions } from "../../../store/authStore";
 export interface Config {
   authorization: string;
   baseURL: string;
+  debug: boolean;
   endpoints: {
     login: string;
     currentUser: string;
@@ -20,6 +21,7 @@ const defaultConfig: Config = {
     currentUser: "/auth/current_user",
     logout: "/auth/logout",
   },
+  debug: false,
   authorization: "authorization",
   actions, // Include actions in the defaultConfig
 };
@@ -27,7 +29,7 @@ const defaultConfig: Config = {
 let config: Config = { ...defaultConfig };
 
 export const setConfig = (newConfig: Partial<Config>) => {
-  config = { ...config, ...newConfig, actions };
+  config = { ...config, ...newConfig };
 };
 //
 export const getConfig = () => config;
