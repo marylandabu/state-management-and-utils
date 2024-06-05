@@ -29,5 +29,5 @@ let config: Config = { ...defaultConfig };
 export const setConfig = (newConfig: Partial<Config>) => {
   config = { ...config, ...newConfig, actions };
 };
-
+//
 export const getConfig = () => config;
