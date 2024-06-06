@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { getActions, useAccessToken, useUserData } from "../../store/authStore";
 import { fetchUser, getToken } from "../api/auth/authApi";
 
-const useGetUser = () => {
+export const useGetUser = () => {
   const user = useUserData();
   const authToken = useAccessToken() || getToken();
 
@@ -25,5 +25,3 @@ const useGetUser = () => {
 
   return user;
 };
-
-export default useGetUser;

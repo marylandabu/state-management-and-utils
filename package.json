@@ -1,7 +1,7 @@
 {
   "name": "state-management-and-utils",
   "private": false,
-  "version": "0.0.56",
+  "version": "0.0.62",
   "main": "dist/cjs/index",
   "module": "dist/esm/index",
   "types": "dist/index.d.ts",
@@ -13,7 +13,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "bump": "npm version patch",
     "publish": "npm publish",
-    "bp": "bump && publish",
+    "bp": "bump && build && publish",
     "pp": "npm version patch && npm publish",
     "pminor": "npm version minor && npm publish",
     "pmajor": "npm version major && npm publish",
