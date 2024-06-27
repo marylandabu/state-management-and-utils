@@ -1,8 +1,8 @@
-import VideoUploader from "./VideoUploader";
-import VideoList from "./VideoList";
+import { VideoUploader } from "./VideoUploader";
+import { VideoList } from "./VideoList";
 import { S3Client } from "@aws-sdk/client-s3";
 
-const VideoCapture = ({
+export const VideoCapture = ({
   apiEndpoint,
   bucketName,
   userId,
@@ -25,5 +25,3 @@ const VideoCapture = ({
     </div>
   );
 };
-
-export default VideoCapture;

@@ -1,10 +1,10 @@
 // components/VideoUploader.js
 import React, { useState } from "react";
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
-import LoadingSpinner from "../LoadingSpinner";
+import { LoadingSpinner } from "../LoadingSpinner";
 import { authAxios } from "../../utils/api/auth/authApi";
 
-const VideoUploader = ({
+export const VideoUploader = ({
   s3Client,
   apiEndpoint,
   bucketName,
@@ -66,5 +66,3 @@ const VideoUploader = ({
     </div>
   );
 };
-
-export default VideoUploader;

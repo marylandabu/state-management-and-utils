@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import LoadingSpinner from "../LoadingSpinner";
+import { LoadingSpinner } from "../LoadingSpinner";
 import { authAxios } from "../../utils/api/auth/authApi";
 
-const VideoList = ({
+export const VideoList = ({
   apiEndpoint,
   userId,
 }: {
@@ -55,5 +55,3 @@ const VideoList = ({
     </div>
   );
 };
-
-export default VideoList;

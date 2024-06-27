@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import LoadingSpinner from "./LoadingSpinner";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 type FileUploaderProps = {
   s3Client: S3Client;
