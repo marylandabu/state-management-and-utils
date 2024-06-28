@@ -1,4 +1,3 @@
-// components/VideoUploader.js
 import React, { useState } from "react";
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { LoadingSpinner } from "../LoadingSpinner";
