@@ -8,6 +8,7 @@ export interface Config {
     login: string;
     currentUser: string;
     logout: string;
+    signup: string;
   };
   actions: ReturnType<typeof getActions>; // Define the type for actions
 }
@@ -20,6 +21,7 @@ const defaultConfig: Config = {
     login: "/auth/login",
     currentUser: "/auth/current_user",
     logout: "/auth/logout",
+    signup: "/auth/signup",
   },
   debug: false,
   authorization: "authorization",

@@ -49,6 +49,40 @@ export const signIn = async (reqBody: { email: string; password: string }) => {
   }
 };
 
+export const signUp = async (reqBody: { email: string; password: string }) => {
+  const {
+    baseURL,
+    endpoints,
+    authorization,
+    debug,
+    actions: { setAccessToken, setUserData },
+  } = getConfig();
+  const body = { user: reqBody };
+
+  try {
+    const response: AxiosResponse = await axios.post(
+      `${baseURL}${endpoints.signup}`,
+      body
+    );
+
+    const accessToken = response.headers[authorization];
+    if (debug) {
+      console.log("debugging sign up", {
+        response,
+        accessToken,
+        headers: response.headers,
+      });
+    }
+    if (accessToken) localStorage.setItem("token", accessToken);
+    setAccessToken(accessToken);
+    setUserData(response?.data?.data);
+
+    return accessToken;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export const fetchUser = async () => {
   const { baseURL, endpoints, debug } = getConfig();
   const token = localStorage.getItem("token");
