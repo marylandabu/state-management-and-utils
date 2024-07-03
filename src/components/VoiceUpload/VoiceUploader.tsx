@@ -1,18 +1,20 @@
-import { useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
-import { LoadingSpinner } from "../LoadingSpinner";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import { authAxios } from "../../utils/api/auth/authApi";
 
-export const VoiceUploader = ({
-  s3Client,
-  apiEndpoint,
-  bucketName,
-  userId,
-}: {
+interface VoiceUploaderProps {
   s3Client: S3Client;
   apiEndpoint: string;
   bucketName: string;
   userId: string;
+}
+
+export const VoiceUploader: React.FC<VoiceUploaderProps> = ({
+  s3Client,
+  apiEndpoint,
+  bucketName,
+  userId,
 }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [recordedBlob, setRecordedBlob] = useState<Blob | null>(null);
@@ -74,18 +76,40 @@ export const VoiceUploader = ({
   };
 
   return (
-    <div>
-      {loading && <LoadingSpinner />}
-      {!isRecording ? (
-        <button onClick={handleStartRecording}>Start Recording</button>
-      ) : (
-        <button onClick={handleStopRecording}>Stop Recording</button>
-      )}
+    <Box sx={{ textAlign: "center", mt: 4 }}>
+      {loading && <CircularProgress />}
+      <Box sx={{ mb: 2 }}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={isRecording ? handleStopRecording : handleStartRecording}
+          sx={{ mb: 2 }}
+        >
+          {isRecording ? "Stop Recording" : "Start Recording"}
+        </Button>
+      </Box>
       {recordedBlob && (
-        <button onClick={handleUpload} disabled={loading}>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={handleUpload}
+          disabled={loading}
+        >
           Upload Audio
-        </button>
+        </Button>
       )}
-    </div>
+      <Box sx={{ mt: 2 }}>
+        <Typography variant="body1">
+          {isRecording
+            ? "Recording... Press Stop to finish."
+            : "Press Start to begin recording."}
+        </Typography>
+        {recordedBlob && (
+          <Typography variant="body2" color="textSecondary">
+            A recorded audio is ready for upload.
+          </Typography>
+        )}
+      </Box>
+    </Box>
   );
 };

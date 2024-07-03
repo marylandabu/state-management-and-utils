@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
-import { LoadingSpinner } from "../LoadingSpinner";
+import React, { useEffect, useState } from "react";
+import { Box, Grid, Typography, Paper, CircularProgress } from "@mui/material";
 import { authAxios } from "../../utils/api/auth/authApi";
 
-export const VoiceList = ({
-  apiEndpoint,
-  userId,
-}: {
+interface VoiceListProps {
   apiEndpoint: string;
   userId: string;
+}
+
+export const VoiceList: React.FC<VoiceListProps> = ({
+  apiEndpoint,
+  userId,
 }) => {
   const [audios, setAudios] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
@@ -32,26 +34,34 @@ export const VoiceList = ({
   }, [userId, apiEndpoint]);
 
   if (loading) {
-    return <LoadingSpinner />;
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" my={4}>
+        <CircularProgress />
+      </Box>
+    );
   }
 
   return (
-    <div className="my-8">
-      <h2 className="text-2xl font-bold mb-4">My Audios</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <Box my={4}>
+      <Typography variant="h4" component="h2" gutterBottom>
+        My Audios
+      </Typography>
+      <Grid container spacing={2}>
         {audios.length > 0 ? (
           audios.map((audioUrl, index) => (
-            <div key={index} className="relative rounded-lg shadow-md">
-              <audio className="w-full" controls>
-                <source src={audioUrl} type="audio/webm" />
-                Your browser does not support the audio tag.
-              </audio>
-            </div>
+            <Grid item xs={12} md={6} lg={4} key={index}>
+              <Paper elevation={3} sx={{ p: 2 }}>
+                <audio controls style={{ width: "100%" }}>
+                  <source src={audioUrl} type="audio/webm" />
+                  Your browser does not support the audio tag.
+                </audio>
+              </Paper>
+            </Grid>
           ))
         ) : (
-          <p>No audios found.</p>
+          <Typography variant="body1">No audios found.</Typography>
         )}
-      </div>
-    </div>
+      </Grid>
+    </Box>
   );
 };

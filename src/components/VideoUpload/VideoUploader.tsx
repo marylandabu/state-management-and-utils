@@ -1,25 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, ChangeEvent } from "react";
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
-import { LoadingSpinner } from "../LoadingSpinner";
 import { authAxios } from "../../utils/api/auth/authApi";
+import { CircularProgress, Box, Button, TextField } from "@mui/material";
 
-export const VideoUploader = ({
-  s3Client,
-  apiEndpoint,
-  bucketName,
-  userId,
-}: {
+interface VideoUploaderProps {
   s3Client: S3Client;
   apiEndpoint: string;
   bucketName: string;
   userId: string;
+}
+
+export const VideoUploader: React.FC<VideoUploaderProps> = ({
+  s3Client,
+  apiEndpoint,
+  bucketName,
+  userId,
 }) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const [fileName, setFileName] = useState<string>("");
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       setSelectedFile(event.target.files[0]);
+      setFileName(event.target.files[0].name);
     }
   };
 
@@ -28,10 +32,10 @@ export const VideoUploader = ({
 
     setLoading(true);
 
-    const fileName = `videos/${Date.now()}_${selectedFile.name}`;
+    const fileKey = `videos/${Date.now()}_${selectedFile.name}`;
     const uploadParams = {
       Bucket: bucketName,
-      Key: fileName,
+      Key: fileKey,
       Body: selectedFile,
       ACL: "public-read",
     };
@@ -43,7 +47,7 @@ export const VideoUploader = ({
 
       console.log("Upload successful");
       await authAxios.post(`${apiEndpoint}/users/${userId || 1}/upload_video`, {
-        video: fileName,
+        video: fileKey,
       });
 
       alert("Video uploaded successfully");
@@ -52,16 +56,54 @@ export const VideoUploader = ({
       alert("Failed to upload video");
     } finally {
       setLoading(false);
+      setSelectedFile(null);
+      setFileName("");
     }
   };
 
   return (
-    <div>
-      {loading && <LoadingSpinner />}
-      <input type="file" accept="video/*" onChange={handleFileChange} />
-      <button onClick={handleUpload} disabled={!selectedFile || loading}>
-        Upload Video
-      </button>
-    </div>
+    <Box sx={{ textAlign: "center", my: 4 }}>
+      {loading && (
+        <Box display="flex" justifyContent="center" my={2}>
+          <CircularProgress />
+        </Box>
+      )}
+      <Box>
+        <TextField
+          type="text"
+          value={fileName}
+          placeholder="No file chosen"
+          sx={{ mb: 2 }}
+          disabled
+        />
+        <input
+          type="file"
+          accept="video/*"
+          onChange={handleFileChange}
+          style={{ display: "none" }}
+          id="video-upload-input"
+        />
+        <label htmlFor="video-upload-input">
+          <Button
+            variant="contained"
+            component="span"
+            color="primary"
+            sx={{ mb: 2 }}
+          >
+            Choose File
+          </Button>
+        </label>
+      </Box>
+      <Box>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleUpload}
+          disabled={!selectedFile || loading}
+        >
+          Upload Video
+        </Button>
+      </Box>
+    </Box>
   );
 };

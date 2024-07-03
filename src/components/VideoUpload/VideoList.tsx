@@ -1,15 +1,26 @@
 import { useEffect, useState } from "react";
-import { LoadingSpinner } from "../LoadingSpinner";
+import {
+  CircularProgress,
+  Container,
+  Grid,
+  Typography,
+  Box,
+  Card,
+  CardMedia,
+  CardContent,
+} from "@mui/material";
 import { authAxios } from "../../utils/api/auth/authApi";
 
-export const VideoList = ({
-  apiEndpoint,
-  userId,
-}: {
+interface VideoListProps {
   apiEndpoint: string;
   userId: string;
+}
+
+export const VideoList: React.FC<VideoListProps> = ({
+  apiEndpoint,
+  userId,
 }) => {
-  const [videos, setVideos] = useState([]);
+  const [videos, setVideos] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -23,35 +34,72 @@ export const VideoList = ({
       .then((response) => {
         const vids = response.data.videos;
         setVideos(vids);
-        setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching videos:", error);
+      })
+      .finally(() => {
         setLoading(false);
       });
   }, [userId, apiEndpoint]);
 
+  const formatDateFromFilename = (filename: string) => {
+    const timestamp = filename.match(/(\d+)_/);
+    if (timestamp) {
+      const date = new Date(parseInt(timestamp[1], 10));
+      return date.toLocaleDateString();
+    }
+    return "Unknown Date";
+  };
+
   if (loading) {
-    return <LoadingSpinner />;
+    return (
+      <>
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          minHeight="100vh"
+        >
+          <CircularProgress />
+        </Box>
+      </>
+    );
   }
 
   return (
-    <div className="my-8">
-      <h2 className="text-2xl font-bold mb-4">My Videos</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {videos.length > 0 ? (
-          videos.map((videoUrl, index) => (
-            <div key={index} className="relative rounded-lg shadow-md">
-              <video className="w-full h-auto" controls>
-                <source src={videoUrl} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </div>
-          ))
-        ) : (
-          <p>No videos found.</p>
-        )}
-      </div>
-    </div>
+    <>
+      <Container sx={{ my: 4 }}>
+        <Typography variant="h4" gutterBottom>
+          My Videos
+        </Typography>
+        <Grid container spacing={4}>
+          {videos.length > 0 ? (
+            videos.map((videoUrl, index) => (
+              <Grid item xs={12} md={6} lg={4} key={index}>
+                <Card>
+                  <CardMedia
+                    component="video"
+                    controls
+                    src={videoUrl}
+                    title={`Video ${index + 1}`}
+                  />
+                  <CardContent>
+                    <Typography variant="body2" color="textSecondary">
+                      Uploaded on:{" "}
+                      {formatDateFromFilename(
+                        videoUrl.split("/").pop() || "Unknown Filename"
+                      )}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))
+          ) : (
+            <Typography>No videos found.</Typography>
+          )}
+        </Grid>
+      </Container>
+    </>
   );
 };
