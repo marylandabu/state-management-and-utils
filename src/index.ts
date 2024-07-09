@@ -25,3 +25,9 @@ export * from "./components/VoiceUpload/VoiceCapture";
 export * from "./components/VoiceUpload/VoiceList";
 
 export * from "./components/VoiceUpload/VoiceUploader";
+
+export * from "./components/FileUploader/FileCapture";
+
+export * from "./components/FileUploader/FileList";
+
+export * from "./components/FileUploader/FileUploader";
