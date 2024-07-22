@@ -31,3 +31,5 @@ export * from "./components/FileUploader/FileCapture";
 export * from "./components/FileUploader/FileList";
 
 export * from "./components/FileUploader/FileUploader";
+
+export * from "./components/Entries/Entries";

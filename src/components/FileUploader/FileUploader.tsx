@@ -1,15 +1,16 @@
-import React, { useState, ChangeEvent, useEffect } from "react";
+import React, { useState, ChangeEvent } from "react";
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { authAxios } from "../../utils/api/auth/authApi";
 import {
   CircularProgress,
   Box,
   Button,
-  TextField,
-  MenuItem,
+  Typography,
   Select,
+  MenuItem,
 } from "@mui/material";
 import EXIF from "exif-js";
+import useStore from "./store";
 
 interface FileUploaderProps {
   s3Client: S3Client;
@@ -24,24 +25,12 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
   bucketName,
   userId,
 }) => {
+  const { folders, setFiles } = useStore();
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [loading, setLoading] = useState(false);
   const [fileNames, setFileNames] = useState<string[]>([]);
   const [metadataList, setMetadataList] = useState<unknown[]>([]);
-  const [folders, setFolders] = useState<{ id: number; name: string }[]>([]);
   const [selectedFolder, setSelectedFolder] = useState<number | null>(null);
-
-  useEffect(() => {
-    // Fetch folders for the user
-    authAxios
-      .get(`${apiEndpoint}/users/${userId}/folders`)
-      .then((response) => {
-        setFolders(response.data.folders);
-      })
-      .catch((error) => {
-        console.error("Error fetching folders:", error);
-      });
-  }, [userId, apiEndpoint]);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -92,7 +81,6 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
           const command = new PutObjectCommand(uploadParams);
           await s3Client.send(command);
 
-          console.log(`Upload successful for file ${file.name}`);
           await authAxios.post(
             `${apiEndpoint}/users/${userId || 1}/upload_file`,
             {
@@ -104,83 +92,75 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
         })
       );
 
-      alert("Files uploaded successfully");
-    } catch (error) {
-      console.error("Error uploading files:", error);
-      alert("Failed to upload files");
-    } finally {
-      setLoading(false);
+      const response = await authAxios.get(
+        `${apiEndpoint}/users/${userId}/files`
+      );
+      setFiles(response.data.files);
+
       setSelectedFiles([]);
       setFileNames([]);
       setMetadataList([]);
+    } catch (error) {
+      console.error("Error uploading files:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <Box sx={{ textAlign: "center", my: 4 }}>
-      {loading && (
-        <Box display="flex" justifyContent="center" my={2}>
-          <CircularProgress />
+    <Box>
+      <input
+        type="file"
+        multiple
+        onChange={handleFileChange}
+        style={{ display: "none" }}
+        id="file-upload-input"
+      />
+      <label htmlFor="file-upload-input">
+        <Button variant="contained" component="span">
+          Select Files
+        </Button>
+      </label>
+      {fileNames.length > 0 && (
+        <Box mt={2}>
+          <Typography variant="h6">Selected Files:</Typography>
+          <ul>
+            {fileNames.map((fileName, index) => (
+              <li key={index}>{fileName}</li>
+            ))}
+          </ul>
         </Box>
       )}
-      <Box>
-        <TextField
-          type="text"
-          value={fileNames.join(", ")}
-          placeholder="No files chosen"
-          sx={{ mb: 2 }}
-          disabled
-          fullWidth
-        />
-        <input
-          type="file"
-          accept="image/*,video/*"
-          onChange={handleFileChange}
-          style={{ display: "none" }}
-          id="file-upload-input"
-          multiple
-          // @ts-expect-error disregard for now
-          webkitdirectory="true"
-          directory="true"
-        />
-        <label htmlFor="file-upload-input">
-          <Button
-            variant="contained"
-            component="span"
-            color="primary"
-            sx={{ mb: 2 }}
-          >
-            Choose Folder
-          </Button>
-        </label>
-      </Box>
-      <Box sx={{ mb: 2 }}>
+      <Box mt={2}>
+        <Typography variant="h6">Upload to Folder:</Typography>
         <Select
           value={selectedFolder}
-          onChange={(e) => setSelectedFolder(e.target.value as number)}
+          onChange={(e) => setSelectedFolder(Number(e.target.value))}
           displayEmpty
           fullWidth
         >
-          <MenuItem value="">
-            <em>Root</em>
+          <MenuItem value="" disabled>
+            Select Folder
           </MenuItem>
           {folders.map((folder) => (
             <MenuItem key={folder.id} value={folder.id}>
-              {folder.name}
+              {folder.original_filename}
             </MenuItem>
           ))}
         </Select>
       </Box>
-      <Box>
+      <Box mt={2}>
         <Button
           variant="contained"
           color="primary"
           onClick={handleUpload}
-          disabled={selectedFiles.length === 0 || loading}
+          disabled={loading}
         >
-          Upload Files
+          {loading ? <CircularProgress size={24} /> : "Upload"}
         </Button>
       </Box>
     </Box>
   );
 };
+
+export default FileUploader;

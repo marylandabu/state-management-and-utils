@@ -1,27 +1,31 @@
 import { VoiceUploader } from "./VoiceUploader";
 import { VoiceList } from "./VoiceList";
-import { S3Client } from "@aws-sdk/client-s3";
+import { getConfig } from "../../utils/api/auth/config";
+import { ThemeProvider } from "@mui/material";
+import { FileUploadS3Props } from "../../utils/types/weatherTypes";
 
 export const VoiceCapture = ({
   apiEndpoint,
   bucketName,
   userId,
   s3Client,
-}: {
-  apiEndpoint: string;
-  bucketName: string;
-  userId: string;
-  s3Client: S3Client;
-}) => {
-  return (
-    <div className="my-8">
-      <VoiceUploader
-        s3Client={s3Client}
-        apiEndpoint={apiEndpoint}
-        bucketName={bucketName}
-        userId={userId}
-      />
-      <VoiceList apiEndpoint={apiEndpoint} userId={userId} />
-    </div>
+}: FileUploadS3Props) => {
+  const content = (
+      <div className="my-8">
+        <VoiceUploader
+          s3Client={s3Client}
+          apiEndpoint={apiEndpoint}
+          bucketName={bucketName}
+          userId={userId}
+        />
+        <VoiceList apiEndpoint={apiEndpoint} userId={userId} />
+      </div>
+    ),
+    { theme } = getConfig();
+
+  return theme ? (
+    <ThemeProvider theme={theme}>{content}</ThemeProvider>
+  ) : (
+    content
   );
 };

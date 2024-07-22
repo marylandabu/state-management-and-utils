@@ -1,3 +1,4 @@
+import { Theme } from "@mui/material";
 import { getActions } from "../../../store/authStore";
 
 export interface Config {
@@ -10,6 +11,7 @@ export interface Config {
     logout: string;
     signup: string;
   };
+  theme?: Theme | undefined;
   actions: ReturnType<typeof getActions>; // Define the type for actions
 }
 
@@ -26,6 +28,7 @@ const defaultConfig: Config = {
   debug: false,
   authorization: "authorization",
   actions, // Include actions in the defaultConfig
+  theme: undefined,
 };
 
 let config: Config = { ...defaultConfig };

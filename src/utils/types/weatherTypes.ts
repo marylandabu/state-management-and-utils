@@ -1,3 +1,6 @@
+import { S3Client } from "@aws-sdk/client-s3";
+import { Theme } from "@emotion/react";
+
 export interface Weather {
   id: number;
   main: string;
@@ -65,4 +68,12 @@ export interface WeatherResponse {
   cnt: number;
   list: ListItem[];
   city: City;
+}
+
+export interface FileUploadS3Props {
+  apiEndpoint: string;
+  bucketName: string;
+  userId: string;
+  s3Client: S3Client;
+  theme?: Theme;
 }

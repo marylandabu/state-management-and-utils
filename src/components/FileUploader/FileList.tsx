@@ -17,24 +17,16 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { authAxios } from "../../utils/api/auth/authApi";
+import useStore, { FileData } from "./store";
 
 interface FileListProps {
   apiEndpoint: string;
   userId: string;
 }
 
-interface FileData {
-  url: string;
-  type: string;
-  original_filename: string;
-  parent_folder_id: number | null;
-  id: number;
-}
-
 export const FileList: React.FC<FileListProps> = ({ apiEndpoint, userId }) => {
-  const [files, setFiles] = useState<FileData[]>([]);
+  const { files, folders, setFiles, setFolders } = useStore();
   const [loading, setLoading] = useState(true);
-  const [folders, setFolders] = useState<FileData[]>([]);
   const [selectedFile, setSelectedFile] = useState<FileData | null>(null);
   const [targetFolder, setTargetFolder] = useState<number | null>(null);
 
@@ -79,9 +71,9 @@ export const FileList: React.FC<FileListProps> = ({ apiEndpoint, userId }) => {
         fileUrl: selectedFile.url,
         targetFolder,
       });
-
+      // @ts-expect-error disregard
       setFiles((prevFiles) =>
-        prevFiles.map((file) =>
+        prevFiles.map((file: FileData) =>
           file.url === selectedFile.url
             ? { ...file, parent_folder_id: targetFolder }
             : file

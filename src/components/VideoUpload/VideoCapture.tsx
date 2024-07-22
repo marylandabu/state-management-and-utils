@@ -1,36 +1,28 @@
 import React from "react";
 import { VideoUploader } from "./VideoUploader";
 import { VideoList } from "./VideoList";
-import { S3Client } from "@aws-sdk/client-s3";
-import { Theme, ThemeProvider } from "@mui/material";
+import { getConfig } from "../../utils/api/auth/config";
+import { FileUploadS3Props } from "../../utils/types/weatherTypes";
+import { ThemeProvider } from "@mui/material";
 
-type VideoCaptureProps = {
-  apiEndpoint: string;
-  bucketName: string;
-  userId: string;
-  s3Client: S3Client;
-  theme?: Theme;
-};
-
-export const VideoCapture: React.FC<VideoCaptureProps> = ({
+export const VideoCapture: React.FC<FileUploadS3Props> = ({
   apiEndpoint,
   bucketName,
   userId,
   s3Client,
-  theme,
 }) => {
   const content = (
-    <div className="my-8">
-      <VideoUploader
-        s3Client={s3Client}
-        apiEndpoint={apiEndpoint}
-        bucketName={bucketName}
-        userId={userId}
-      />
-      <VideoList apiEndpoint={apiEndpoint} userId={userId} />
-    </div>
-  );
-
+      <div className="my-8">
+        <VideoUploader
+          s3Client={s3Client}
+          apiEndpoint={apiEndpoint}
+          bucketName={bucketName}
+          userId={userId}
+        />
+        <VideoList apiEndpoint={apiEndpoint} userId={userId} />
+      </div>
+    ),
+    { theme } = getConfig();
   return theme ? (
     <ThemeProvider theme={theme}>{content}</ThemeProvider>
   ) : (
