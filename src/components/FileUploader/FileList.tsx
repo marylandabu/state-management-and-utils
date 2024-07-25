@@ -99,7 +99,7 @@ export const FileList: React.FC<FileListProps> = ({ apiEndpoint, userId }) => {
 
   const renderFiles = (folderId: number) => (
     <Grid container spacing={4}>
-      {groupedFiles[folderId]?.map((file) => (
+      {groupedFiles[folderId]?.reverse().map((file) => (
         <Grid item xs={12} md={6} lg={4} key={file.url}>
           <Card>
             {file.type.startsWith("video") ? (

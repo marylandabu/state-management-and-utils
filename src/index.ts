@@ -33,3 +33,7 @@ export * from "./components/FileUploader/FileList";
 export * from "./components/FileUploader/FileUploader";
 
 export * from "./components/Entries/Entries";
+
+export * from "./components/LoginModal";
+
+export * from "./components/SignupModal";

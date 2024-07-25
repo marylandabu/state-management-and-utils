@@ -145,6 +145,7 @@ interface JournalEntryListProps {
 interface JournalEntries {
   id: string;
   content: string;
+  transcript?: string;
   files: string[];
 }
 export const JournalEntryList: React.FC<JournalEntryListProps> = ({
@@ -204,7 +205,7 @@ export const JournalEntryList: React.FC<JournalEntryListProps> = ({
       </Typography>
       <Grid container spacing={4}>
         {journalEntries.length > 0 ? (
-          journalEntries.map((entry, index) => (
+          journalEntries.reverse().map((entry, index) => (
             <Grid item xs={12} md={6} lg={4} key={index}>
               <Card>
                 {entry.files.map((file: string, fileIndex: number) => (
@@ -216,6 +217,11 @@ export const JournalEntryList: React.FC<JournalEntryListProps> = ({
                   <Typography variant="body2" color="textSecondary">
                     {entry.content}
                   </Typography>
+                  {entry.transcript && (
+                    <Typography variant="body2" color="textSecondary">
+                      {entry.transcript}
+                    </Typography>
+                  )}
                 </CardContent>
               </Card>
             </Grid>

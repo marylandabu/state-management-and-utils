@@ -48,7 +48,7 @@ export const VoiceList: React.FC<VoiceListProps> = ({
       </Typography>
       <Grid container spacing={2}>
         {audios.length > 0 ? (
-          audios.map((audioUrl, index) => (
+          audios.reverse().map((audioUrl, index) => (
             <Grid item xs={12} md={6} lg={4} key={index}>
               <Paper elevation={3} sx={{ p: 2 }}>
                 <audio controls style={{ width: "100%" }}>

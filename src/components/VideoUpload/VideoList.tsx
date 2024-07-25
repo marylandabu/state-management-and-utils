@@ -16,11 +16,16 @@ interface VideoListProps {
   userId: string;
 }
 
+interface Video {
+  url: string;
+  transcript: string;
+}
+
 export const VideoList: React.FC<VideoListProps> = ({
   apiEndpoint,
   userId,
 }) => {
-  const [videos, setVideos] = useState<string[]>([]);
+  const [videos, setVideos] = useState<Video[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -75,21 +80,27 @@ export const VideoList: React.FC<VideoListProps> = ({
         </Typography>
         <Grid container spacing={4}>
           {videos.length > 0 ? (
-            videos.map((videoUrl, index) => (
+            videos.reverse().map(({ url, transcript }, index) => (
               <Grid item xs={12} md={6} lg={4} key={index}>
                 <Card>
                   <CardMedia
                     component="video"
                     controls
-                    src={videoUrl}
+                    src={url}
                     title={`Video ${index + 1}`}
                   />
                   <CardContent>
                     <Typography variant="body2" color="textSecondary">
                       Uploaded on:{" "}
                       {formatDateFromFilename(
-                        videoUrl.split("/").pop() || "Unknown Filename"
+                        url.split("/").pop() || "Unknown Filename"
                       )}
+                    </Typography>
+                  </CardContent>
+
+                  <CardContent>
+                    <Typography variant="body2" color="textSecondary">
+                      {transcript}
                     </Typography>
                   </CardContent>
                 </Card>
