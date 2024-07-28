@@ -37,3 +37,5 @@ export * from "./components/Entries/Entries";
 export * from "./components/LoginModal";
 
 export * from "./components/SignupModal";
+
+export * from "./utils/themes";

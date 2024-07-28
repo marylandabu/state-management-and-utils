@@ -1,5 +1,6 @@
 import { Theme } from "@mui/material";
 import { getActions } from "../../../store/authStore";
+import { orangeGrayTheme } from "../../themes";
 
 export interface Config {
   authorization: string;
@@ -28,7 +29,7 @@ const defaultConfig: Config = {
   debug: false,
   authorization: "authorization",
   actions, // Include actions in the defaultConfig
-  theme: undefined,
+  theme: orangeGrayTheme,
 };
 
 let config: Config = { ...defaultConfig };
@@ -36,5 +37,5 @@ let config: Config = { ...defaultConfig };
 export const setConfig = (newConfig: Partial<Config>) => {
   config = { ...config, ...newConfig };
 };
-//
+
 export const getConfig = () => config;

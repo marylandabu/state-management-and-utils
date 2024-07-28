@@ -59,58 +59,59 @@ export const VideoList: React.FC<VideoListProps> = ({
 
   if (loading) {
     return (
-      <>
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          minHeight="100vh"
-        >
-          <CircularProgress />
-        </Box>
-      </>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="100vh"
+      >
+        <CircularProgress />
+      </Box>
     );
   }
 
   return (
-    <>
-      <Container sx={{ my: 4 }}>
-        <Typography variant="h4" gutterBottom>
-          My Videos
-        </Typography>
-        <Grid container spacing={4}>
-          {videos.length > 0 ? (
-            videos.reverse().map(({ url, transcript }, index) => (
-              <Grid item xs={12} md={6} lg={4} key={index}>
-                <Card>
-                  <CardMedia
-                    component="video"
-                    controls
-                    src={url}
-                    title={`Video ${index + 1}`}
-                  />
-                  <CardContent>
-                    <Typography variant="body2" color="textSecondary">
-                      Uploaded on:{" "}
-                      {formatDateFromFilename(
-                        url.split("/").pop() || "Unknown Filename"
-                      )}
-                    </Typography>
-                  </CardContent>
-
-                  <CardContent>
-                    <Typography variant="body2" color="textSecondary">
-                      {transcript}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))
-          ) : (
-            <Typography>No videos found.</Typography>
-          )}
-        </Grid>
-      </Container>
-    </>
+    <Container sx={{ my: 4 }}>
+      <Grid container spacing={4}>
+        {videos.length > 0 ? (
+          videos.reverse().map(({ url, transcript }, index) => (
+            <Grid item xs={12} md={6} lg={4} key={index}>
+              <Card
+                sx={{
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <CardMedia
+                  component="video"
+                  controls
+                  src={url}
+                  title={`Video ${index + 1}`}
+                  sx={{ height: 200 }}
+                />
+                <CardContent sx={{ flexGrow: 1 }}>
+                  <Typography variant="body2" color="textSecondary">
+                    Uploaded on:{" "}
+                    {formatDateFromFilename(
+                      url.split("/").pop() || "Unknown Filename"
+                    )}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    sx={{ mt: 1 }}
+                  >
+                    {transcript}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))
+        ) : (
+          <Typography>No videos found.</Typography>
+        )}
+      </Grid>
+    </Container>
   );
 };

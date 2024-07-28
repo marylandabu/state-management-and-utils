@@ -1,6 +1,12 @@
 import React, { useState, ChangeEvent, useEffect } from "react";
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
-import { Button, TextField, ThemeProvider } from "@mui/material";
+import {
+  Accordion,
+  AccordionSummary,
+  Button,
+  TextField,
+  ThemeProvider,
+} from "@mui/material";
 import {
   CircularProgress,
   Box,
@@ -11,6 +17,7 @@ import {
   CardMedia,
   CardContent,
 } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { authAxios } from "../../utils/api/auth/authApi";
 import { FileUploadS3Props } from "../../utils/types/weatherTypes";
 import { getConfig } from "../../utils/api/auth/config";
@@ -200,9 +207,6 @@ export const JournalEntryList: React.FC<JournalEntryListProps> = ({
 
   return (
     <Container sx={{ my: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        My Journal Entries
-      </Typography>
       <Grid container spacing={4}>
         {journalEntries.length > 0 ? (
           journalEntries.reverse().map((entry, index) => (
@@ -241,15 +245,24 @@ export const Entries: React.FC<FileUploadS3Props> = ({
   s3Client,
 }) => {
   const content = (
-      <div className="my-8">
+      <Box className="my-8">
         <JournalEntryUploader
           s3Client={s3Client}
           apiEndpoint={apiEndpoint}
           bucketName={bucketName}
           userId={userId}
         />
+        <Accordion>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography>My Journal Entries</Typography>
+          </AccordionSummary>
+        </Accordion>
         <JournalEntryList apiEndpoint={apiEndpoint} userId={userId} />
-      </div>
+      </Box>
     ),
     { theme } = getConfig();
 

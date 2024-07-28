@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent } from "react";
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { authAxios } from "../../utils/api/auth/authApi";
-import { CircularProgress, Box, Button, TextField } from "@mui/material";
+import { CircularProgress, Box, Button, TextField, Grid } from "@mui/material";
 
 interface VideoUploaderProps {
   s3Client: S3Client;
@@ -68,33 +68,37 @@ export const VideoUploader: React.FC<VideoUploaderProps> = ({
           <CircularProgress />
         </Box>
       )}
-      <Box>
-        <TextField
-          type="text"
-          value={fileName}
-          placeholder="No file chosen"
-          sx={{ mb: 2 }}
-          disabled
-        />
-        <input
-          type="file"
-          accept="video/*"
-          onChange={handleFileChange}
-          style={{ display: "none" }}
-          id="video-upload-input"
-        />
-        <label htmlFor="video-upload-input">
-          <Button
-            variant="contained"
-            component="span"
-            color="primary"
-            sx={{ mb: 2 }}
-          >
-            Choose File
-          </Button>
-        </label>
-      </Box>
-      <Box>
+      <Grid container spacing={2} justifyContent="center" alignItems="center">
+        <Grid item>
+          <TextField
+            type="text"
+            value={fileName}
+            placeholder="No file chosen"
+            disabled
+            sx={{ minWidth: 200 }}
+          />
+        </Grid>
+        <Grid item>
+          <input
+            type="file"
+            accept="video/*"
+            onChange={handleFileChange}
+            style={{ display: "none" }}
+            id="video-upload-input"
+          />
+          <label htmlFor="video-upload-input">
+            <Button
+              variant="contained"
+              component="span"
+              color="primary"
+              sx={{ minWidth: 150 }}
+            >
+              Choose Files
+            </Button>
+          </label>
+        </Grid>
+      </Grid>
+      <Box sx={{ mt: 2 }}>
         <Button
           variant="contained"
           color="primary"
